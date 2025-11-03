@@ -1,13 +1,15 @@
 package util;
 import java.io.*;
-import java.util.*;
+
+import br.edu.fateczl.listaSimples.Lista;
 
 public class arquivoUtil {
-
-	public static List<String> lerArquivo(String caminho) throws IOException {
-        List<String> linhas = new ArrayList<>();
+	
+	//Le o arquivo para coleta dos dados
+	public static Lista<String> lerArquivo(String caminho) throws Exception, IOException {
+        Lista<String> linhas = new Lista<>();
         File arquivo = new File(caminho);
-
+        
         if (!arquivo.exists()) {
             arquivo.getParentFile().mkdirs();
             arquivo.createNewFile();
@@ -17,26 +19,32 @@ public class arquivoUtil {
         BufferedReader br = new BufferedReader(new FileReader(arquivo));
         String linha;
         while ((linha = br.readLine()) != null) {
-            linhas.add(linha);
+            linhas.add(linha, 0);
         }
         br.close();
 
         return linhas;
     }
 
-    public static void gravarArquivo(String caminho, List<String> linhas) throws IOException {
+	//Grava todos os dados no arquivo
+    public static void gravarArquivo(String caminho, Lista<String> linhas) throws Exception, IOException  {
         File arquivo = new File(caminho);
         arquivo.getParentFile().mkdirs(); 
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo, false));
-        for (String linha : linhas) {
+        
+        for (int i = 0; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            
             bw.write(linha);
             bw.newLine();
         }
+        
         bw.close();
     }
 
-    public static void adicionarLinha(String caminho, String linha) throws IOException {
+    //Adiciona uma linha
+    public static void adicionarLinha(String caminho, String linha) throws Exception, IOException  {
         File arquivo = new File(caminho);
         arquivo.getParentFile().mkdirs();
 
@@ -45,4 +53,5 @@ public class arquivoUtil {
         bw.newLine();
         bw.close();
     }
+    
 }
